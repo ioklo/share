@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <style>
+#stage { width: 800px; height: 600px; background-color: lightyellow; position: relative }
+.stage-child { position: absolute; background-color: white; border: solid 1px lightblue;  }
+.stage-child-filled { position: absolute; background-color: lightblue; border: solid 1px lightblue;  }
+
+        </style>
+    </head>
+
+    <body>
+        X축 박스 개수  <input id="boxX" value="100"> 
+        Y축 박스 개수 <input id="boxY" value="50">
+        부분 <input id="portion" value="32669121">
+        전체 <input id="entire" value="328200000">
+
+        <button onclick="run();">실행</button>
+
+        <div id="stage"><div class="stage-child" style="top: 10px;  left: 10px; width: 10px; height: 10px;"></div><div class="stage-child-filled" style="top: 10px;  left: 23px; width: 10px; height: 10px;"></div></div>
+
+        <script lang="javascript">
+            function run()
+            {
+                var boxCountX = document.getElementById('boxX').value;
+                var boxCountY = document.getElementById('boxY').value;
+                var portion = document.getElementById('portion').value;
+                var entire = document.getElementById('entire').value;
+
+                var stage = document.getElementById('stage');
+
+                while (stage.firstChild) {
+                    stage.removeChild(stage.lastChild);                    
+                }
+
+                // stage
+                // (0, 0), (10+3, 0), 
+                const pad = 3;                
+                const padding = 3;
+                const width = 10;
+                const height = 10;
+
+                // thresholdCount 계산
+                // 전체                 
+                var thresholdCount = (boxCountX * boxCountY) * (portion / entire);
+
+                var count = 0;                
+                for(var x = 0; x < boxCountX; x++)
+                    for(var y = 0; y < boxCountY; y++)                    
+                    {
+                        count++;
+
+                        var divNode = document.createElement("div");
+
+                        if (thresholdCount < count )
+                            divNode.classList = 'stage-child';
+                        else
+                            divNode.classList = 'stage-child-filled';
+
+                        divNode.style.left = pad + ((width + padding) * x) + 'px';
+                        divNode.style.top = pad + ((height + padding) * y) + 'px';
+                        divNode.style.width = width + 'px';
+                        divNode.style.height = height + 'px';                        
+
+                        stage.appendChild(divNode);
+                    }
+            }
+
+        </script>
+    </body>
+</html>
